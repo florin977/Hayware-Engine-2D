@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/andrei/1HaywareEngine/include", // Add your include folder
+                "/home/andrei/1HaywareEngine/include/Glad", // Add Glad header path
+                "/home/andrei/SDL/include" // SDL include path
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "browse": {
+                "path": [
+                    "/home/andrei/1HaywareEngine/include",
+                    "/home/andrei/SDL/include"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}
