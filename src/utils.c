@@ -44,24 +44,7 @@ void *getElement(VECTOR *v, GLuint64 index)
     return (char *)v->array + (index * v->dataSize);
 }
 
-void push_back_old(void **array, GLuint64 *size, GLuint64 *position, void *element, uint8_t dataSize)
+GLdouble toRadians(GLdouble degrees)
 {
-    if (*position == *size)
-    {
-        *size = *size + CHUNK;
-
-        void *temp = NULL;
-
-        if ((temp = realloc(*array,  *size * dataSize)) == NULL)
-        {
-            free(*array);
-            perror("Realloc:");
-            exit(EXIT_FAILURE);
-        }
-
-        *array = temp;
-    }
-
-    memcpy((char*)(*array) + (*position * dataSize), element, dataSize);
-    (*position)++;
+    return (degrees * (PI / 180));
 }

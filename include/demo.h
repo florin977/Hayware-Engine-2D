@@ -8,9 +8,10 @@ typedef struct POINT
 {
     GLfloat x;
     GLfloat y;
+    GLfloat z;
 } POINT;
 
-#define MIN_SIDE 0.02f
+#define MIN_SIDE 0.05f
 
 void drawSquare(VECTOR *vector, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex);
 

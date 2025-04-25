@@ -21,8 +21,8 @@ int main(int argc, char **argv)
     VECTOR vertices = createVector(sizeof(POINT));
     VECTOR indices = createVector(sizeof(GLuint));
 
-    POINT start = {-1, 1};
-    GLfloat side = 2.0f;
+    POINT start = {-0.5, 0.5, 0};
+    GLfloat side = 1.0f;
     GLuint currentIndex = 0;
 
     boxFractal(&vertices, &indices, start, side, &currentIndex);
@@ -50,6 +50,12 @@ int main(int argc, char **argv)
     GLuint64 time = SDL_GetTicks();
     GLuint64 frames = 0;
 
+    GLuint xRotationUniform = glGetUniformLocation(shaderProgram, "xAngle");
+    GLuint zRotationUniform = glGetUniformLocation(shaderProgram, "zAngle");
+
+    GLdouble xAngle = 0.0f;
+    GLdouble zAngle = 0.0f;
+
     SDL_GL_SetSwapInterval(0); // Disable VSYNC
 
     while (running)
@@ -57,11 +63,38 @@ int main(int argc, char **argv)
         // Handle user interactions
         while (SDL_PollEvent(&event))
         {
-            if (event.type == SDL_EVENT_QUIT)
+            switch(event.type)
             {
-                running = 0;
+                case SDL_EVENT_QUIT:
+                    running = 0;
+                    break;
+                case SDL_EVENT_KEY_DOWN:
+                    if (event.key.scancode == SDL_SCANCODE_W)
+                    {
+                        xAngle += 5.0f;
+                    }
+                    if (event.key.scancode == SDL_SCANCODE_S)
+                    {
+                        xAngle -= 5.0f;
+                    }
+                    if (event.key.scancode == SDL_SCANCODE_A)
+                    {
+                        zAngle += 5.0f;
+                    }
+                    if (event.key.scancode == SDL_SCANCODE_D)
+                    {
+                        zAngle -= 5.0f;
+                    }
+                    if (event.key.key == SDLK_ESCAPE)
+                    {
+                        running = 0;
+                    }
+                    break;
+
             }
         }
+        GLdouble xAngleInRadians = toRadians(xAngle);
+        GLdouble zAngleInRadians = toRadians(zAngle);
 
         // Clear screen with dark-teal
         glClearColor(0.0f, 0.30f, 0.30f, 1.0f);
@@ -83,6 +116,9 @@ int main(int argc, char **argv)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 
         glUseProgram(shaderProgram);
+
+        glUniform1f(xRotationUniform, xAngleInRadians);
+        glUniform1f(zRotationUniform, zAngleInRadians);
 
         glDrawElements(GL_LINES, indices.currentIndex, GL_UNSIGNED_INT, 0);
 

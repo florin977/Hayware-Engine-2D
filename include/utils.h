@@ -13,6 +13,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#define PI 3.14
 #define CHUNK 1
 
 typedef struct VECTOR
@@ -29,6 +30,6 @@ void push_back(VECTOR *v, void *element);
 
 void *getElement(VECTOR *v, GLuint64 index);
 
-void push_back_old(void **array, GLuint64 *size, GLuint64 *position, void *element, uint8_t dataSize);
+GLdouble toRadians(GLdouble degrees);
 
 #endif

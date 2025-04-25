@@ -45,26 +45,10 @@ GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO)
     {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     }
-    else 
-    {
-        //fprintf(stderr, "No EBO\n");
-        //exit(-1);
-    }
 
     // Position
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, vertices->dataSize, (void *)0);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VERTEX), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void *)0);
     glEnableVertexAttribArray(0);
-
-    /*
-    // Color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VERTEX), (void*)(3 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    // Texture coordinates
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VERTEX), (void*)(6 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(2);
-    */
 
     // Unbind all buffers
     glBindVertexArray(0);
