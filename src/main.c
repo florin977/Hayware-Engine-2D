@@ -23,10 +23,9 @@ int main(int argc, char **argv)
 
     POINT start = {-1, 1};
     GLfloat side = 2.0f;
-    GLuint depth = 5;
     GLuint currentIndex = 0;
 
-    boxFractal(&vertices, &indices, start, side, &currentIndex, depth);
+    boxFractal(&vertices, &indices, start, side, &currentIndex);
 
     GLuint VBO = 0;
     GLuint EBO = 0;

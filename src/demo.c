@@ -30,9 +30,9 @@ void drawSquare(VECTOR *vector, VECTOR *indices, POINT start, GLfloat side, GLui
     (*currentIndex)++;
 }
 
-void boxFractal(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex, GLuint depth)
+void boxFractal(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex)
 {
-    if (depth == 0)
+    if (side <= MIN_SIDE)
     {
         drawSquare(vertices, indices, start, side, currentIndex);
     }
@@ -46,15 +46,15 @@ void boxFractal(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GL
         POINT bottomLeft = {start.x, start.y - 2 * side};
         POINT bottomRight = {start.x + 2 * side, start.y - 2 * side};
 
-        boxFractal(vertices, indices, topLeft, side, currentIndex, depth - 1);
+        boxFractal(vertices, indices, topLeft, side, currentIndex);
 
-        boxFractal(vertices, indices, topRight, side, currentIndex, depth - 1);
+        boxFractal(vertices, indices, topRight, side, currentIndex);
         
-        boxFractal(vertices, indices, center, side, currentIndex, depth - 1);
+        boxFractal(vertices, indices, center, side, currentIndex);
 
-        boxFractal(vertices, indices, bottomLeft, side, currentIndex, depth - 1);
+        boxFractal(vertices, indices, bottomLeft, side, currentIndex);
 
-        boxFractal(vertices, indices, bottomRight, side, currentIndex, depth - 1);
+        boxFractal(vertices, indices, bottomRight, side, currentIndex);
     }
 }
 
