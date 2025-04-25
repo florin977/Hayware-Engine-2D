@@ -6,6 +6,11 @@
 },
 {
   "directory": "/home/andrei/1HaywareEngine/build",
+  "command": "gcc  -I/home/andrei/1HaywareEngine/build/../include -I/home/andrei/SDL/include/SDL3 -g -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o -c /home/andrei/1HaywareEngine/src/utils.c",
+  "file": "/home/andrei/1HaywareEngine/src/utils.c"
+},
+{
+  "directory": "/home/andrei/1HaywareEngine/build",
   "command": "gcc  -I/home/andrei/1HaywareEngine/build/../include -I/home/andrei/SDL/include/SDL3 -g -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o -c /home/andrei/1HaywareEngine/src/stb_image.c",
   "file": "/home/andrei/1HaywareEngine/src/stb_image.c"
 },
@@ -21,7 +26,7 @@
 },
 {
   "directory": "/home/andrei/1HaywareEngine/build",
-  "command": "gcc  -I/home/andrei/1HaywareEngine/build/../include -I/home/andrei/SDL/include/SDL3 -g -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o -c /home/andrei/1HaywareEngine/src/utils.c",
-  "file": "/home/andrei/1HaywareEngine/src/utils.c"
+  "command": "gcc  -I/home/andrei/1HaywareEngine/build/../include -I/home/andrei/SDL/include/SDL3 -g -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o -c /home/andrei/1HaywareEngine/src/demo.c",
+  "file": "/home/andrei/1HaywareEngine/src/demo.c"
 }
 ]

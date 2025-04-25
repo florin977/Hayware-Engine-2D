@@ -153,6 +153,30 @@ home/andrei/1HaywareEngine/src/SDL/init_window.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.s
 .PHONY : home/andrei/1HaywareEngine/src/SDL/init_window.c.s
 
+home/andrei/1HaywareEngine/src/demo.o: home/andrei/1HaywareEngine/src/demo.c.o
+.PHONY : home/andrei/1HaywareEngine/src/demo.o
+
+# target to build an object file
+home/andrei/1HaywareEngine/src/demo.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o
+.PHONY : home/andrei/1HaywareEngine/src/demo.c.o
+
+home/andrei/1HaywareEngine/src/demo.i: home/andrei/1HaywareEngine/src/demo.c.i
+.PHONY : home/andrei/1HaywareEngine/src/demo.i
+
+# target to preprocess a source file
+home/andrei/1HaywareEngine/src/demo.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.i
+.PHONY : home/andrei/1HaywareEngine/src/demo.c.i
+
+home/andrei/1HaywareEngine/src/demo.s: home/andrei/1HaywareEngine/src/demo.c.s
+.PHONY : home/andrei/1HaywareEngine/src/demo.s
+
+# target to generate assembly for a file
+home/andrei/1HaywareEngine/src/demo.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.s
+.PHONY : home/andrei/1HaywareEngine/src/demo.c.s
+
 home/andrei/1HaywareEngine/src/main.o: home/andrei/1HaywareEngine/src/main.c.o
 .PHONY : home/andrei/1HaywareEngine/src/main.o
 
@@ -261,6 +285,9 @@ help:
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.o"
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.i"
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.s"
+	@echo "... home/andrei/1HaywareEngine/src/demo.o"
+	@echo "... home/andrei/1HaywareEngine/src/demo.i"
+	@echo "... home/andrei/1HaywareEngine/src/demo.s"
 	@echo "... home/andrei/1HaywareEngine/src/main.o"
 	@echo "... home/andrei/1HaywareEngine/src/main.i"
 	@echo "... home/andrei/1HaywareEngine/src/main.s"

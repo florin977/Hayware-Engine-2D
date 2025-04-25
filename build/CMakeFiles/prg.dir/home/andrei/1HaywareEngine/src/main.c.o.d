@@ -184,4 +184,5 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o: \
  /home/andrei/1HaywareEngine/build/../include/cglm/affine2d.h \
  /home/andrei/1HaywareEngine/build/../include/stb_image.h \
  /home/andrei/1HaywareEngine/build/../include/utils.h \
- /home/andrei/1HaywareEngine/build/../include/render.h
+ /home/andrei/1HaywareEngine/build/../include/utils.h \
+ /home/andrei/1HaywareEngine/build/../include/demo.h

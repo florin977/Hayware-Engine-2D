@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o"
   "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o.d"
+  "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o"
+  "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o.d"
   "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o"
   "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o.d"
   "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o"

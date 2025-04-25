@@ -1,8 +1,6 @@
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o: \
  /home/andrei/1HaywareEngine/src/utils.c /usr/include/stdc-predef.h \
  /home/andrei/1HaywareEngine/build/../include/utils.h \
- /home/andrei/1HaywareEngine/build/../include/render.h \
- /home/andrei/1HaywareEngine/build/../include/init_window.h \
  /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -64,8 +62,10 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /home/andrei/1HaywareEngine/build/../include/GL/glew.h \
- /usr/include/GL/glu.h /usr/include/GL/gl.h /usr/local/include/SDL3/SDL.h \
- /usr/local/include/SDL3/SDL_stdinc.h \
+ /usr/include/GL/glu.h /usr/include/GL/gl.h \
+ /home/andrei/1HaywareEngine/build/../include/render.h \
+ /home/andrei/1HaywareEngine/build/../include/init_window.h \
+ /usr/local/include/SDL3/SDL.h /usr/local/include/SDL3/SDL_stdinc.h \
  /usr/local/include/SDL3/SDL_platform_defines.h /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
@@ -183,4 +183,4 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o: \
  /home/andrei/1HaywareEngine/build/../include/cglm/ray.h \
  /home/andrei/1HaywareEngine/build/../include/cglm/affine2d.h \
  /home/andrei/1HaywareEngine/build/../include/stb_image.h \
- /home/andrei/1HaywareEngine/build/../include/render.h
+ /home/andrei/1HaywareEngine/build/../include/utils.h

@@ -2,7 +2,7 @@
 
 #define UTILS_H
 
-#include "render.h"
+//#include "render.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -26,6 +26,8 @@ typedef struct VECTOR
 VECTOR createVector(uint8_t dataSize); // Call createVector after malloc == memory leak
 
 void push_back(VECTOR *v, void *element);
+
+void *getElement(VECTOR *v, GLuint64 index);
 
 void push_back_old(void **array, GLuint64 *size, GLuint64 *position, void *element, uint8_t dataSize);
 

@@ -1,6 +1,7 @@
 #include "init_window.h"
 #include "render.h"
 #include "utils.h"
+#include "demo.h"
 
 int main(int argc, char **argv)
 {
@@ -17,66 +18,43 @@ int main(int argc, char **argv)
     SDL_Event event;
     int8_t running = 1;
 
-    VERTEX *vertices = NULL;
-    GLuint *indices = NULL;
+    VECTOR vertices = createVector(sizeof(POINT));
+    VECTOR indices = createVector(sizeof(GLuint));
 
-    GLuint64 verticesSize = 0;
-    GLuint64 indicesSize = 0;
+    POINT start = {-1, 1};
+    GLfloat side = 2.0f;
+    GLuint depth = 5;
+    GLuint currentIndex = 0;
+
+    boxFractal(&vertices, &indices, start, side, &currentIndex, depth);
 
     GLuint VBO = 0;
+    GLuint EBO = 0;
+    GLuint VAO = 0;
 
-    VERTEX start = { -0.25f, 0.25f, 0, 255, 255, 255, 0, 0 };
-    
+    VBO = createVBO(&vertices, GL_STATIC_DRAW);
+    EBO = createEBO(&indices, GL_STATIC_DRAW);
+    VAO = createVAO(VBO, &vertices, EBO);
+
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f); // Make lines thicker
-
-    VBO = create_VBO(verticesSize, vertices, GL_STATIC_DRAW);
-
-    GLuint EBO = 0;
-
-    EBO = create_EBO(indicesSize, indices, GL_STATIC_DRAW);
 
     GLuint vertexShader = 0;
     GLuint fragmentShader = 0;
 
-    vertexShader = compile_shader("/home/andrei/1HaywareEngine/src/shaders/vertexShader.vert", Vertex_Shader);
-    fragmentShader = compile_shader("/home/andrei/1HaywareEngine/src/shaders/fragShader.frag", Fragment_Shader);
+    vertexShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/vertexShader.vert", Vertex_Shader);
+    fragmentShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/fragShader.frag", Fragment_Shader);
 
     GLuint shaderProgram = 0;
-    shaderProgram = create_program(vertexShader, fragmentShader);
-
-    GLuint VAO = 0;
-    VAO = create_VAO(VBO, EBO);
+    shaderProgram = createProgram(vertexShader, fragmentShader);
 
     GLuint64 time = SDL_GetTicks();
     GLuint64 frames = 0;
 
     SDL_GL_SetSwapInterval(0); // Disable VSYNC
 
-    VECTOR v = createVector(sizeof(GLuint));
-    GLuint a = 10;
-        
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-    push_back2(&v, &a);
-
-    for (int i = 0; i < v.currentIndex; i++)
-    {
-        printf("VECTOR: %d\n", i);
-    }
-
     while (running)
     {
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
         // Handle user interactions
         while (SDL_PollEvent(&event))
         {
@@ -96,18 +74,18 @@ int main(int argc, char **argv)
 
         if (currentTime - time >= 1000)
         {
-            printf("FPS: %lu\n", frames);
+            // printf("FPS: %lu\n", frames);
             frames = 0;
             time = currentTime;
         }
 
-        // Use shaders and VAO
- 
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+
         glUseProgram(shaderProgram);
 
-        glBindVertexArray(VAO);
-
-        glDrawElements(GL_LINES, indicesSize, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, indices.currentIndex, GL_UNSIGNED_INT, 0);
 
         SDL_GL_SwapWindow(window);
     }

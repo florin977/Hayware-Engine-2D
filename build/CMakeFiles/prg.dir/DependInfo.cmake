@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/andrei/1HaywareEngine/src/SDL/init_window.c" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o" "gcc" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o.d"
+  "/home/andrei/1HaywareEngine/src/demo.c" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o" "gcc" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o.d"
   "/home/andrei/1HaywareEngine/src/main.c" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o" "gcc" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o.d"
   "/home/andrei/1HaywareEngine/src/render.c" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o" "gcc" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o.d"
   "/home/andrei/1HaywareEngine/src/stb_image.c" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o" "gcc" "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o.d"

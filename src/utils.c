@@ -34,6 +34,16 @@ void push_back(VECTOR *v, void *element)
     (v->currentIndex)++;
 }
 
+void *getElement(VECTOR *v, GLuint64 index)
+{
+    if (index >= v->size)
+    {
+        return NULL;
+    }
+
+    return (char *)v->array + (index * v->dataSize);
+}
+
 void push_back_old(void **array, GLuint64 *size, GLuint64 *position, void *element, uint8_t dataSize)
 {
     if (*position == *size)

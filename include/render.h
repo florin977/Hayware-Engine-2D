@@ -5,6 +5,7 @@
 #include "init_window.h"
 #include "cglm/cglm.h"
 #include "stb_image.h"
+#include "utils.h"
 
 typedef struct
 {
@@ -36,16 +37,16 @@ typedef enum
     Fragment_Shader,
 } Shader_Type;
 
-GLuint create_VBO(const GLuint64 size, const VERTEX* vertices, const GLenum drawType);
+GLuint createVBO(const VECTOR *vertices, const GLenum drawType);
 
-GLuint create_EBO(const GLuint64 size, const GLuint* indices, const GLenum drawType);
+GLuint createEBO(const VECTOR *indices, const GLenum drawType);
 
-GLuint create_VAO(const GLuint VBO, const GLuint EBO);
+GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO);
 
-GLuint compile_shader(const char* filename, Shader_Type shaderType);
+GLuint compileShader(const char* filename, Shader_Type shaderType);
 
-GLuint create_program(GLuint vertexShader, GLuint fragmentShader);
+GLuint createProgram(GLuint vertexShader, GLuint fragmentShader);
 
-GLuint create_texture(const char* filepath, const GLenum textureFormat);
+GLuint createTexture(const char* filepath, const GLenum textureFormat);
 
 #endif

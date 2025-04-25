@@ -81,12 +81,12 @@ clean: CMakeFiles/prg.dir/clean
 CMakeFiles/prg.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target prg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target prg"
 .PHONY : CMakeFiles/prg.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/prg.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrei/1HaywareEngine/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrei/1HaywareEngine/build/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/prg.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/andrei/1HaywareEngine/build/CMakeFiles 0
 .PHONY : CMakeFiles/prg.dir/rule
