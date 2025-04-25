@@ -30,6 +30,6 @@ Feel free to fork the repository, make changes, and submit pull requests! Contri
 ![Box Fractal Demo](image.png)
 
 ## TODO:
-[] Installation guide in README.md (Linux, Windows, macOS)
-[] Koch Fractal
-[] 3D Box Fractal
+- [ ] Installation guide in README.md (Linux, Windows, macOS)
+- [ ] Koch Fractal
+- [ ] 3D Box Fractal
