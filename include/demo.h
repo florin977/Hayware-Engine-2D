@@ -11,9 +11,10 @@ typedef struct POINT
     GLfloat z;
 } POINT;
 
-#define MIN_SIDE 0.05f
+#define SQUARE_POINTS 4
+#define MIN_SIDE 0.025f
 
-void drawSquare(VECTOR *vector, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex);
+void drawSquare(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex);
 
 void boxFractal(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex);
 
