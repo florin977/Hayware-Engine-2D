@@ -1,10 +1,113 @@
 #include "demo.h"
 
+void drawSquareFullFace(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex)
+{
+    // Indices
+    GLuint topLeftIndex = *currentIndex;
+    GLuint backTopLeftIndex = topLeftIndex + SQUARE_POINTS; // 4 points of the square
+
+    GLuint topRightIndex = *currentIndex + 1;
+    GLuint backTopRightIndex = topRightIndex + SQUARE_POINTS;
+
+    GLuint bottomRightIndex = *currentIndex + 2;
+    GLuint backBottomRightIndex = bottomRightIndex + SQUARE_POINTS;
+
+    GLuint bottomLeftIndex = *currentIndex + 3;
+    GLuint backBottomLeftIndex = bottomLeftIndex + SQUARE_POINTS;
+
+    *currentIndex = backBottomLeftIndex + 1;
+
+    COLOR frontCol = {0.0f, 0.0f, 1.0f};
+    COLOR backCol = {1.0f, 0.0f, 0.0f};
+    // Vertices
+    VERTEX topLeft = createVertex((POINT){start.x, start.y, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX topRight = createVertex((POINT){start.x + side, start.y, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX bottomRight = createVertex((POINT){start.x + side, start.y - side, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX bottomLeft = createVertex((POINT){start.x, start.y - side, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
+    
+    VERTEX backTopLeft = createVertex((POINT){start.x, start.y, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX backTopRight = createVertex((POINT){start.x + side, start.y, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX backBottomRight = createVertex((POINT){start.x + side, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX backBottomLeft = createVertex((POINT){start.x, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
+    
+    //Vertices vector
+    // Front face
+    push_back(vertices, &topLeft);
+    push_back(vertices, &topRight);
+    push_back(vertices, &bottomRight);
+    push_back(vertices, &bottomLeft);
+
+    // Back face
+    push_back(vertices, &backTopLeft);
+    push_back(vertices, &backTopRight);
+    push_back(vertices, &backBottomRight);
+    push_back(vertices, &backBottomLeft);
+
+    // Indices vector
+    // Front face
+    push_back(indices, &topLeftIndex);
+    push_back(indices, &topRightIndex);
+    push_back(indices, &bottomRightIndex);
+
+    push_back(indices, &topLeftIndex);
+    push_back(indices, &bottomRightIndex);
+    push_back(indices, &bottomLeftIndex);
+
+    // Back face
+    push_back(indices, &backTopLeftIndex);
+    push_back(indices, &backTopRightIndex);
+    push_back(indices, &backBottomRightIndex);
+
+    push_back(indices, &backTopLeftIndex);
+    push_back(indices, &backBottomRightIndex);
+    push_back(indices, &backBottomLeftIndex);
+
+    // Connections
+
+    // Top
+    push_back(indices, &topLeftIndex);
+    push_back(indices, &backTopLeftIndex);
+    push_back(indices, &backTopRightIndex);
+
+    push_back(indices, &topLeftIndex);
+    push_back(indices, &backTopRightIndex);
+    push_back(indices, &topRightIndex);
+
+    // Right
+    push_back(indices, &topRightIndex);
+    push_back(indices, &backTopRightIndex);
+    push_back(indices, &backBottomRightIndex);
+
+    push_back(indices, &topRightIndex);
+    push_back(indices, &backBottomRightIndex);
+    push_back(indices, &bottomRightIndex);
+
+    //Bottom
+    push_back(indices, &bottomLeftIndex);
+    push_back(indices, &backBottomLeftIndex);
+    push_back(indices, &backBottomRightIndex);
+
+    push_back(indices, &bottomLeftIndex);
+    push_back(indices, &backBottomRightIndex);
+    push_back(indices, &bottomRightIndex);
+
+    // Left
+    push_back(indices, &bottomLeftIndex);
+    push_back(indices, &backBottomLeftIndex);
+    push_back(indices, &backTopLeftIndex);
+
+    push_back(indices, &bottomLeftIndex);
+    push_back(indices, &backTopLeftIndex);
+    push_back(indices, &topLeftIndex);
+}
+
 void drawSquare(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GLuint *currentIndex)
 {
+    // Indices
     GLuint startIndex = *currentIndex;
     GLuint backStartIndex = startIndex + SQUARE_POINTS; // 4 points of the square
 
+    // Vertices
     POINT topLeft = {start.x, start.y, start.z};
     POINT topRight = {start.x + side, start.y, start.z};
     POINT bottomRight = {start.x + side, start.y - side, start.z};
@@ -15,7 +118,7 @@ void drawSquare(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GL
     POINT backBottomRight = {start.x + side, start.y - side, start.z - 0.05f};
     POINT backBottomLeft = {start.x, start.y - side, start.z - 0.05f};
     
-    //Vertices 
+    //Vertices vector
 
     // Front face
     push_back(vertices, &topLeft);
@@ -29,7 +132,7 @@ void drawSquare(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GL
     push_back(vertices, &backBottomRight);
     push_back(vertices, &backBottomLeft);
 
-    // Indices
+    // Indices vector
     push_back(indices, currentIndex); // Start index (topLeft vertex)
     (*currentIndex)++;
 
@@ -70,7 +173,8 @@ void boxFractal(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat side, GL
 {
     if (side <= MIN_SIDE)
     {
-        drawSquare(vertices, indices, start, side, currentIndex);
+        //drawSquare(vertices, indices, start, side, currentIndex);
+        drawSquareFullFace(vertices, indices, start, side, currentIndex);
     }
     else 
     {

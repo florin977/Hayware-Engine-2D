@@ -50,6 +50,10 @@ GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void *)0);
     glEnableVertexAttribArray(0);
 
+    // Color
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void*)sizeof(POINT));
+    glEnableVertexAttribArray(1);
+
     // Unbind all buffers
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

@@ -24,7 +24,44 @@ typedef struct VECTOR
     void *array;
 } VECTOR;
 
+
+typedef struct POINT
+{
+    GLfloat x;
+    GLfloat y;
+    GLfloat z;
+} POINT;
+
+typedef struct COLOR
+{
+    GLfloat r;
+    GLfloat g;
+    GLfloat b;
+} COLOR;
+
+typedef struct TEXTURE
+{
+    GLfloat s;
+    GLfloat t;
+} TEXTURE;
+
+typedef struct
+{
+    // Position
+    POINT position;
+
+    // Color
+    COLOR color;
+
+    // Texture coordinates
+    TEXTURE texture;
+} VERTEX;
+
 VECTOR createVector(uint8_t dataSize); // Call createVector after malloc == memory leak
+
+VERTEX createVertex(); // Position: (0, 0, 0), color: white, texture coords: (0, 0)
+
+void setVertexPosition(VERTEX *v, POINT pos);
 
 void push_back(VECTOR *v, void *element);
 

@@ -9,23 +9,6 @@
 
 typedef struct
 {
-    // Position
-    GLfloat x;
-    GLfloat y;
-    GLfloat z;
-
-    // Color
-    GLfloat r;
-    GLfloat g;
-    GLfloat b;
-
-    // Texture coordinates
-    GLfloat s;
-    GLfloat t;
-} VERTEX;
-
-typedef struct
-{
     GLuint x;
     GLuint y;
     GLuint Z;

@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     SDL_Event event;
     int8_t running = 1;
 
-    VECTOR vertices = createVector(sizeof(POINT));
+    VECTOR vertices = createVector(sizeof(VERTEX));
     VECTOR indices = createVector(sizeof(GLuint));
 
     POINT start = {-0.5, 0.5, 0};
@@ -34,6 +34,8 @@ int main(int argc, char **argv)
     VBO = createVBO(&vertices, GL_STATIC_DRAW);
     EBO = createEBO(&indices, GL_STATIC_DRAW);
     VAO = createVAO(VBO, &vertices, EBO);
+
+    glEnable(GL_DEPTH_TEST); // Z-Buffer
 
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.0f); // Make lines thicker
@@ -99,7 +101,8 @@ int main(int argc, char **argv)
         // Clear screen with dark-teal
         glClearColor(0.0f, 0.30f, 0.30f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear depth buffer
+
         // Calculate FPS
         GLuint64 currentTime = SDL_GetTicks();
         frames++;
@@ -120,7 +123,8 @@ int main(int argc, char **argv)
         glUniform1f(xRotationUniform, xAngleInRadians);
         glUniform1f(zRotationUniform, zAngleInRadians);
 
-        glDrawElements(GL_LINES, indices.currentIndex, GL_UNSIGNED_INT, 0);
+        //glDrawElements(GL_LINES, indices.currentIndex, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, indices.currentIndex, GL_UNSIGNED_INT, 0);
 
         SDL_GL_SwapWindow(window);
     }

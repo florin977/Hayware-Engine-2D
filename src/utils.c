@@ -12,6 +12,29 @@ VECTOR createVector(uint8_t dataSize)
     return v;
 }
 
+VERTEX createVertex(POINT pos, COLOR col, TEXTURE tex)
+{
+    VERTEX v;
+
+    v.position.x = pos.x;
+    v.position.y = pos.y;
+    v.position.z = pos.z;
+    v.color.r = col.r;
+    v.color.g = col.g;
+    v.color.b = col.b;
+    v.texture.s = tex.s;
+    v.texture.t = tex.t;
+
+    return v;
+}
+
+void setVertexPosition(VERTEX *v, POINT pos)
+{
+    v->position.x = pos.x;
+    v->position.y = pos.y;
+    v->position.z = pos.z;
+}
+
 void push_back(VECTOR *v, void *element)
 {
     if (v->currentIndex == v->size)
