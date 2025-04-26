@@ -28,8 +28,10 @@ As the engine evolves, additional tools will be needed, such as:
 Feel free to fork the repository, make changes, and submit pull requests! Contributions are welcome, especially if you have ideas to improve the engine or add more interesting demos.
 ## Images from demos
 ![Box Fractal Demo](image.png)
+![3D Box Fractal Demo - Blue side](image-1.png)
+![3D Box Fractal Demo - Red side](image-2.png)
 
 ## TODO:
-- [] Installation guide in README.md (Linux, Windows, macOS)
+- [ ] Installation guide in README.md (Linux, Windows, macOS)
 - [ ] Koch Fractal
 - [X] 3D Box Fractal
