@@ -20,6 +20,7 @@ include_directories(${PARENT_DIRECTORY}/include)
 set(SOURCES
     ${PARENT_DIRECTORY}/src/main.c
     ${PARENT_DIRECTORY}/src/utils.c
+    ${PARENT_DIRECTORY}/src/breakout.c
     ${PARENT_DIRECTORY}/src/stb_image.c
     ${PARENT_DIRECTORY}/src/SDL/init_window.c
     ${PARENT_DIRECTORY}/src/render.c

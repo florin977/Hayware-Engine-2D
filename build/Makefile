@@ -153,6 +153,30 @@ home/andrei/1HaywareEngine/src/SDL/init_window.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.s
 .PHONY : home/andrei/1HaywareEngine/src/SDL/init_window.c.s
 
+home/andrei/1HaywareEngine/src/breakout.o: home/andrei/1HaywareEngine/src/breakout.c.o
+.PHONY : home/andrei/1HaywareEngine/src/breakout.o
+
+# target to build an object file
+home/andrei/1HaywareEngine/src/breakout.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o
+.PHONY : home/andrei/1HaywareEngine/src/breakout.c.o
+
+home/andrei/1HaywareEngine/src/breakout.i: home/andrei/1HaywareEngine/src/breakout.c.i
+.PHONY : home/andrei/1HaywareEngine/src/breakout.i
+
+# target to preprocess a source file
+home/andrei/1HaywareEngine/src/breakout.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.i
+.PHONY : home/andrei/1HaywareEngine/src/breakout.c.i
+
+home/andrei/1HaywareEngine/src/breakout.s: home/andrei/1HaywareEngine/src/breakout.c.s
+.PHONY : home/andrei/1HaywareEngine/src/breakout.s
+
+# target to generate assembly for a file
+home/andrei/1HaywareEngine/src/breakout.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prg.dir/build.make CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.s
+.PHONY : home/andrei/1HaywareEngine/src/breakout.c.s
+
 home/andrei/1HaywareEngine/src/demo.o: home/andrei/1HaywareEngine/src/demo.c.o
 .PHONY : home/andrei/1HaywareEngine/src/demo.o
 
@@ -285,6 +309,9 @@ help:
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.o"
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.i"
 	@echo "... home/andrei/1HaywareEngine/src/SDL/init_window.s"
+	@echo "... home/andrei/1HaywareEngine/src/breakout.o"
+	@echo "... home/andrei/1HaywareEngine/src/breakout.i"
+	@echo "... home/andrei/1HaywareEngine/src/breakout.s"
 	@echo "... home/andrei/1HaywareEngine/src/demo.o"
 	@echo "... home/andrei/1HaywareEngine/src/demo.i"
 	@echo "... home/andrei/1HaywareEngine/src/demo.s"

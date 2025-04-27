@@ -97,10 +97,24 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.s"
 	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/andrei/1HaywareEngine/src/utils.c -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.s
 
+CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o: CMakeFiles/prg.dir/flags.make
+CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o: /home/andrei/1HaywareEngine/src/breakout.c
+CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o: CMakeFiles/prg.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o"
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o -MF CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o.d -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o -c /home/andrei/1HaywareEngine/src/breakout.c
+
+CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.i"
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/andrei/1HaywareEngine/src/breakout.c > CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.i
+
+CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.s"
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/andrei/1HaywareEngine/src/breakout.c -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.s
+
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o: CMakeFiles/prg.dir/flags.make
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o: /home/andrei/1HaywareEngine/src/stb_image.c
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o: CMakeFiles/prg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o"
 	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o -MF CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o.d -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o -c /home/andrei/1HaywareEngine/src/stb_image.c
 
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.s: cmake_force
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o: CMakeFiles/prg.dir/flags.make
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o: /home/andrei/1HaywareEngine/src/SDL/init_window.c
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o: CMakeFiles/prg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o"
 	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o -MF CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o.d -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o -c /home/andrei/1HaywareEngine/src/SDL/init_window.c
 
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.s: cmake_for
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o: CMakeFiles/prg.dir/flags.make
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o: /home/andrei/1HaywareEngine/src/render.c
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o: CMakeFiles/prg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o"
 	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o -MF CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o.d -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o -c /home/andrei/1HaywareEngine/src/render.c
 
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.s: cmake_force
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o: CMakeFiles/prg.dir/flags.make
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o: /home/andrei/1HaywareEngine/src/demo.c
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o: CMakeFiles/prg.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o"
 	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o -MF CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o.d -o CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.o -c /home/andrei/1HaywareEngine/src/demo.c
 
 CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.i: cmake_force
@@ -157,6 +171,7 @@ CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/demo.c.s: cmake_force
 prg_OBJECTS = \
 "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o" \
 "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o" \
+"CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o" \
 "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o" \
 "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o" \
 "CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o" \
@@ -167,6 +182,7 @@ prg_EXTERNAL_OBJECTS =
 
 prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/main.c.o
 prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/utils.c.o
+prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/breakout.c.o
 prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/stb_image.c.o
 prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/SDL/init_window.c.o
 prg: CMakeFiles/prg.dir/home/andrei/1HaywareEngine/src/render.c.o
@@ -176,7 +192,7 @@ prg: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 prg: /usr/local/lib/libSDL3.so.0.1.7
 prg: /usr/lib/x86_64-linux-gnu/libGLEW.so
 prg: CMakeFiles/prg.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable prg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/andrei/1HaywareEngine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking C executable prg"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/prg.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

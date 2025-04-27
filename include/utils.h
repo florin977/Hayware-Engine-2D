@@ -45,7 +45,7 @@ typedef struct TEXTURE
     GLfloat t;
 } TEXTURE;
 
-typedef struct
+typedef struct VERTEX
 {
     // Position
     POINT position;
