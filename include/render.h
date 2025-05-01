@@ -7,6 +7,9 @@
 #include "stb_image.h"
 #include "utils.h"
 
+#define DEFAULT_TEXTURE_WIDTH 1000
+#define DEFAULT_TEXTURE_HEIGHT 800
+
 typedef struct
 {
     GLuint x;
@@ -26,10 +29,12 @@ GLuint createEBO(const VECTOR *indices, const GLenum drawType);
 
 GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO);
 
+GLuint createTexture(const char *filename, const GLint internalFormat); // Mostly for rendering squad as of now
+
+GLuint createFBO(const GLuint texture);
+
 GLuint compileShader(const char* filename, Shader_Type shaderType);
 
 GLuint createProgram(GLuint vertexShader, GLuint fragmentShader);
-
-GLuint createTexture(const char* filepath, const GLenum textureFormat);
 
 #endif

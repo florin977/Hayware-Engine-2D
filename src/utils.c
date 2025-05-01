@@ -24,15 +24,32 @@ VERTEX createVertex(POINT pos, COLOR col, TEXTURE tex)
     v.color.b = col.b;
     v.texture.s = tex.s;
     v.texture.t = tex.t;
+    v.texture.r = tex.r;
 
     return v;
 }
 
-void setVertexPosition(VERTEX *v, POINT pos)
+void createFullscreenQuad(VECTOR *vertices, VECTOR *indices)
 {
-    v->position.x = pos.x;
-    v->position.y = pos.y;
-    v->position.z = pos.z;
+    VERTEX topLeft = {{-1.0f, 1.0f, 0.1f}, {1.0f, 1.0f, 1.0f}, {0.0f, 1.0f, 0.0f}};
+    VERTEX topRight = {{1.0f, 1.0f, 0.1f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 0.0f}};
+    VERTEX bottomRight = {{1.0f, -1.0f, 0.1f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 0.0f}};
+    VERTEX bottomLeft = {{-1.0f, -1.0f, 0.1f}, {1.0f, 1.0f, 1.0f}, {0.0f, 0.0f, 0.0f}};
+
+    push_back(vertices, &topLeft);
+    push_back(vertices, &topRight);
+    push_back(vertices, &bottomRight);
+    push_back(vertices, &bottomLeft);
+
+    GLuint index = 0;
+
+    index = 0; push_back(indices, &index);
+    index = 1; push_back(indices, &index);
+    index = 2; push_back(indices, &index);
+
+    index = 0; push_back(indices, &index);
+    index = 2; push_back(indices, &index);
+    index = 3; push_back(indices, &index);
 }
 
 void push_back(VECTOR *v, void *element)

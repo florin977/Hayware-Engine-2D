@@ -41,8 +41,9 @@ typedef struct COLOR
 
 typedef struct TEXTURE
 {
-    GLfloat s;
-    GLfloat t;
+    GLfloat s; // x
+    GLfloat t; // y
+    GLfloat r; // z - Used for noise generation, volumetric fog etc.
 } TEXTURE;
 
 typedef struct VERTEX
@@ -61,7 +62,7 @@ VECTOR createVector(uint8_t dataSize); // Call createVector after malloc == memo
 
 VERTEX createVertex(); // Position: (0, 0, 0), color: white, texture coords: (0, 0)
 
-void setVertexPosition(VERTEX *v, POINT pos);
+void createFullscreenQuad(VECTOR *vertices, VECTOR *indices);
 
 void push_back(VECTOR *v, void *element);
 

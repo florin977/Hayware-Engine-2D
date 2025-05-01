@@ -51,8 +51,12 @@ GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO)
     glEnableVertexAttribArray(0);
 
     // Color
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void*)sizeof(POINT));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void *)sizeof(POINT));
     glEnableVertexAttribArray(1);
+
+    // Texture
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, vertices->dataSize, (void *)(sizeof(POINT) + sizeof(COLOR)));
+    glEnableVertexAttribArray(2);
 
     // Unbind all buffers
     glBindVertexArray(0);
@@ -62,9 +66,61 @@ GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO)
     return VAO;
 }
 
-GLuint compileShader(const char* filename, Shader_Type shaderType)
+GLuint createTexture(const char *filename, const GLint internalFormat)
 {
-    FILE* in = NULL;
+    stbi_set_flip_vertically_on_load(true);
+
+    GLubyte *data = NULL;
+    GLint textureWidth = DEFAULT_TEXTURE_WIDTH;
+    GLint textureHeight = DEFAULT_TEXTURE_HEIGHT;
+    GLint textureChannels = 0;
+
+    GLuint texture = 0;
+
+    if (filename[0] != 0)
+    {
+        data = stbi_load(filename, &textureWidth, &textureHeight, &textureChannels, 0);
+    }
+
+    glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, textureWidth, textureHeight, 0, internalFormat, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    stbi_image_free(data);
+
+    return texture;
+}
+
+GLuint createFBO(const GLuint texture)
+{
+    GLuint FBO = 0;
+
+    glGenFramebuffers(1, &FBO);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return FBO;
+}
+
+GLuint compileShader(const char *filename, Shader_Type shaderType)
+{
+    FILE *in = NULL;
 
     if ((in = fopen(filename, "r")) == NULL)
     {
@@ -107,27 +163,27 @@ GLuint compileShader(const char* filename, Shader_Type shaderType)
 
     GLuint shader = 0;
 
-    switch(shaderType)
+    switch (shaderType)
     {
-        case Vertex_Shader:
-        {
-            shader = glCreateShader(GL_VERTEX_SHADER);
-            break;
-        }
-        case Fragment_Shader:
-        {
-            shader = glCreateShader(GL_FRAGMENT_SHADER);
-            break;
-        }
+    case Vertex_Shader:
+    {
+        shader = glCreateShader(GL_VERTEX_SHADER);
+        break;
+    }
+    case Fragment_Shader:
+    {
+        shader = glCreateShader(GL_FRAGMENT_SHADER);
+        break;
+    }
     }
 
-    glShaderSource(shader, 1, (const GLchar* const*) &shaderSource, NULL);
+    glShaderSource(shader, 1, (const GLchar *const *)&shaderSource, NULL);
     glCompileShader(shader);
 
     int success = 0;
     char infoLog[512];
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    
+
     if (!success)
     {
         free(shaderSource);
@@ -154,7 +210,7 @@ GLuint createProgram(GLuint vertexShader, GLuint fragmentShader)
     int success = 0;
     char infoLog[512];
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-    
+
     if (!success)
     {
         glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);

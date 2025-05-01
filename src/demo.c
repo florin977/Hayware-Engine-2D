@@ -20,15 +20,15 @@ void drawSquareFullFace(VECTOR *vertices, VECTOR *indices, POINT start, GLfloat 
     COLOR frontCol = {0.0f, 0.0f, 1.0f};
     COLOR backCol = {1.0f, 0.0f, 0.0f};
     // Vertices
-    VERTEX topLeft = createVertex((POINT){start.x, start.y, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX topRight = createVertex((POINT){start.x + side, start.y, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX bottomRight = createVertex((POINT){start.x + side, start.y - side, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX bottomLeft = createVertex((POINT){start.x, start.y - side, start.z}, frontCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX topLeft = createVertex((POINT){start.x, start.y, start.z}, frontCol, (TEXTURE){0.0f, 1.0f, 0.0f});
+    VERTEX topRight = createVertex((POINT){start.x + side, start.y, start.z}, frontCol, (TEXTURE){1.0f, 1.0f, 0.0f});
+    VERTEX bottomRight = createVertex((POINT){start.x + side, start.y - side, start.z}, frontCol, (TEXTURE){1.0f, 0.0f, 0.0f});
+    VERTEX bottomLeft = createVertex((POINT){start.x, start.y - side, start.z}, frontCol, (TEXTURE){0.0f, 0.0f, 0.0f});
     
-    VERTEX backTopLeft = createVertex((POINT){start.x, start.y, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX backTopRight = createVertex((POINT){start.x + side, start.y, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX backBottomRight = createVertex((POINT){start.x + side, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
-    VERTEX backBottomLeft = createVertex((POINT){start.x, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 0.0f});
+    VERTEX backTopLeft = createVertex((POINT){start.x, start.y, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 1.0f, 0.0f});
+    VERTEX backTopRight = createVertex((POINT){start.x + side, start.y, start.z + 0.05f}, backCol, (TEXTURE){1.0f, 1.0f, 0.0f});
+    VERTEX backBottomRight = createVertex((POINT){start.x + side, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){1.0f, 0.0f, 0.0f});
+    VERTEX backBottomLeft = createVertex((POINT){start.x, start.y - side, start.z + 0.05f}, backCol, (TEXTURE){0.0f, 1.0f, 0.0f});
     
     //Vertices vector
     // Front face
