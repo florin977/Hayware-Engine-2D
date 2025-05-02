@@ -5,15 +5,18 @@ in vec3 outColor;
 in vec2 outTextureCoord;
 
 uniform sampler2D outTexture;
-uniform vec2 mouseCoord;
+uniform ivec2 mouseCoord;
 uniform bool mousePressed;
 
 out vec4 FragColor;
 
+#define TEXTURE_WIDTH 1000
+#define TEXTURE_HEIGHT 800
+
 #define TOLERANCE 0.005
 #define MOUSE_PRESS_TOLERANCE 0.005
-#define TEXEL_SIZE_X (1.0 / 1000) 
-#define TEXEL_SIZE_Y (1.0 / 800)
+#define TEXEL_SIZE_X 1 
+#define TEXEL_SIZE_Y 1
 #define mouseEquals(a, b) (distance(a, b) <= MOUSE_PRESS_TOLERANCE)
 #define equals(a, b) (distance(a, b) <= TOLERANCE)
 
@@ -21,11 +24,18 @@ out vec4 FragColor;
 #define RED vec4(1.0, 0.0, 0.0, 1.0)
 #define GREEN vec4(0.0, 1.0, 0.0, 1.0)
 #define BLUE vec4(0.0, 0.0, 1.0, 1.0)
+#define WALL vec4(0.0, 0.0, 0.0, 0.0)
 #define SAND vec4(0.76, 0.69, 0.5, 1.0)
 
-vec2 offset[3] = {vec2(TEXEL_SIZE_X, 0), vec2(0, TEXEL_SIZE_Y), vec2(TEXEL_SIZE_X, TEXEL_SIZE_Y)};
+ivec2 offset[3] = {ivec2(TEXEL_SIZE_X, 0), ivec2(0, TEXEL_SIZE_Y), ivec2(TEXEL_SIZE_X, TEXEL_SIZE_Y)};
 
 // 0 - right; 1 - down; 2 - diagonal
+
+bool inRange(vec2 currentCoord)
+{
+    return (all(greaterThanEqual(currentCoord, vec2(0.0, 0.0))) && 
+            all(lessThanEqual(currentCoord, vec2(1.0, 1.0))));
+}
 
 int getTileValue(vec4 topLeft, vec4 topRight, vec4 bottomLeft, vec4 bottomRight)
 {
@@ -78,16 +88,32 @@ vec4 getTileColor(vec4 topLeft, vec4 topRight, vec4 bottomLeft, vec4 bottomRight
     return newColor;
 }
 
+ivec2 toIntegerPosition(vec2 floatPosition)
+{
+    return ivec2(floatPosition * vec2(TEXTURE_WIDTH, TEXTURE_HEIGHT));
+}
+
+vec2 toFloatPosition(ivec2 integerPosition)
+{
+    if (TEXTURE_WIDTH != 0 && TEXTURE_HEIGHT != 0)
+    {
+        return vec2(integerPosition / ivec2(TEXTURE_WIDTH, TEXTURE_HEIGHT));
+    }
+    
+    return vec2(0.0, 0.0);
+}
+
 void main()
 {   
-    vec4 topLeft = texture(outTexture, outTextureCoord); // current pixel
-    vec4 topRight = texture(outTexture, outTextureCoord + offset[0]); // pixel to the right of the current one
-    vec4 bottomLeft = texture(outTexture, outTextureCoord + offset[1]); // pixel below current one
-    vec4 bottomRight = texture(outTexture, outTextureCoord + offset[2]); // pixel diagonal to current one
-    
-    vec4 newColor = getTileColor(topLeft, topRight, bottomLeft, bottomRight);
+    ivec2 topLeftPosition = toIntegerPosition(outTextureCoord);
+    ivec2 topRightPosition = topLeftPosition + offset[0];
+    ivec2 bottomLeftPosition = topLeftPosition + offset[1];
+    ivec2 bottomRightPosition = topLeftPosition + offset[2];
 
-    if (mousePressed && mouseEquals(outTextureCoord, mouseCoord))
+    vec4 newColor = texture(outTexture, outTextureCoord); // getTileColor(topLeft, topRight, bottomLeft, bottomRight);
+
+    //if (mousePressed && mouseEquals(outTextureCoord, mouseCoord))
+    if (mousePressed && topLeftPosition.x == mouseCoord.x && topLeftPosition.y == mouseCoord.y)
     {
         newColor = SAND;
     }

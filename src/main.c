@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 
     GLboolean mouseIsPressed = false;
     GLboolean mouseWasMoved = false;
-    GLfloat mouseX = 0.0f;
-    GLfloat mouseY = 0.0f;
+    GLint mouseX = 0;
+    GLint mouseY = 0;
 
     while (running)
     {
@@ -82,12 +82,14 @@ int main(int argc, char **argv)
                 break;
 
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
-                mouseIsPressed = true; // Position normalised to fit the texture coordinates
-                mouseX = event.button.x / 1000;
-                mouseY = 1.0f - event.button.y / 800;
+                mouseX = event.button.x;
+                mouseY = event.button.y;
+                mouseIsPressed = true;
+
+                printf("%d %d\n", mouseX, mouseY);
 
                 // Send mouse position to the shader
-                glUniform2f(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
+                glUniform2i(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
                 glUniform1i(glGetUniformLocation(shaderProgram, "mousePressed"), 1); // Mouse is pressed
                 break;
 
@@ -108,12 +110,11 @@ int main(int argc, char **argv)
             // Only send the new position, do not change the uniform 'mousePressed'
             if (mouseIsPressed)
             {
-                // Position normalised to fit the texture coordinates
-                GLfloat mouseX = event.button.x / 1000;
-                GLfloat mouseY = 1.0f - event.button.y / 800;
+                mouseX = event.button.x;
+                mouseY = DEFAULT_TEXTURE_HEIGHT - event.button.y;
 
                 // Send mouse position to the shader
-                glUniform2f(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
+                glUniform2i(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
             }
         }
 
@@ -121,7 +122,7 @@ int main(int argc, char **argv)
         if (!mouseWasMoved && mouseIsPressed)
         {
             // Send mouse position to the shader
-            glUniform2f(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
+            glUniform2i(glGetUniformLocation(shaderProgram, "mouseCoord"), mouseX, mouseY);
         }
 
         mouseWasMoved = false;
