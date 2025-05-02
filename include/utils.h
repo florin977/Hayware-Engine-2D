@@ -14,7 +14,7 @@
 #include <GL/gl.h>
 
 #define PI 3.14
-#define CHUNK 1
+#define CHUNK 128
 
 typedef struct VECTOR
 {
