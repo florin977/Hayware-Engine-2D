@@ -49,7 +49,9 @@ vec2 toFloatPosition(ivec2 integerPosition)
 {
     if (TEXTURE_WIDTH != 0 && TEXTURE_HEIGHT != 0)
     {
-        return vec2(integerPosition) / ivec2(TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        float posX = float(integerPosition.x + 0.5) / float(TEXTURE_WIDTH);
+        float posY = float(integerPosition.y  + 0.5) / float(TEXTURE_HEIGHT);
+        return vec2(posX, posY);
     }
     
     return vec2(0.0, 0.0);
@@ -98,7 +100,7 @@ vec4 getTileColor(ivec2 topLeftPosition, ivec2 topRightPosition, ivec2 bottomLef
     switch (tileValue % 3)
     {
         case 0:
-            newColor = SAND;
+            newColor = GREEN;
             break;
         case 1:
             newColor = BLUE;
@@ -153,13 +155,65 @@ void main()
 
     vec4 newColor = texture(outTexture, outTextureCoord);
 
-    if (mousePressed && currentPixelPosition.x == mouseCoord.x && currentPixelPosition.y == mouseCoord.y)
+    if (mousePressed && topLeftPosition.x == mouseCoord.x && topLeftPosition.y == mouseCoord.y)
     {
         newColor = SAND;
     }
-    else
+    else 
     {
-        newColor = getTileColor(topLeftPosition, topRightPosition, bottomLeftPosition, bottomRightPosition);
+        int tileValue = getTileValue(topLeftPosition, topRightPosition, bottomLeftPosition, bottomRightPosition);
+
+        switch (tileValue)
+        {   // 1 - SAND 2 - BLUE 3 - RED 4 - GREEN
+            case 0:
+            newColor = texture(outTexture, outTextureCoord);
+            break;
+            case 1:
+            newColor = SAND;
+            break;
+            case 2:
+            newColor = SAND;
+            break;
+            case 3:
+            newColor = BLUE;
+            break;
+            case 4:
+            newColor = SAND;
+            break;
+            case 5:
+            newColor = BLUE;
+            break;
+            case 6:
+            newColor = BLUE;
+            break;
+            case 7:
+            newColor = RED;
+            break;
+            case 8:
+            newColor = SAND;
+            break;
+            case 9:
+            newColor = BLUE;
+            break;
+            case 10:
+            newColor = BLUE;
+            break;
+            case 11:
+            newColor = RED;
+            break;
+            case 12:
+            newColor = BLUE;
+            break;
+            case 13:
+            newColor = RED;
+            break;
+            case 14:
+            newColor = RED;
+            break;
+            case 15:
+            newColor = GREEN;
+            break;
+        }
     }
 
     FragColor = newColor;
