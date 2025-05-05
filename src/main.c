@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
     SDL_Window *window = NULL;
 
-    window = init_window(1000, 800, "Hayware Engine");
+    window = init_window(DEFAULT_TEXTURE_WIDTH, DEFAULT_TEXTURE_HEIGHT, "Hayware Engine");
 
     SDL_GLContext glContext = init_glContext(window);
 
@@ -58,6 +58,9 @@ int main(int argc, char **argv)
     // Boolean to be used for ping ponging between the FBOs
     GLboolean pingPong = true;
 
+    GLint stepUniform = glGetUniformLocation(shaderProgram, "currentStep");
+    GLint step = 0;
+
     GLboolean mouseIsPressed = false;
     GLboolean mouseWasMoved = false;
     GLint mouseX = 0;
@@ -68,6 +71,9 @@ int main(int argc, char **argv)
         glDisable(GL_DEPTH_TEST);
 
         glUseProgram(shaderProgram);
+
+        glUniform1i(stepUniform, step);
+        step = 1 - step;
 
         // Handle user interactions
         while (SDL_PollEvent(&event))
