@@ -58,8 +58,8 @@ int main(int argc, char **argv)
     // Boolean to be used for ping ponging between the FBOs
     GLboolean pingPong = true;
 
-    GLint stepUniform = glGetUniformLocation(shaderProgram, "currentStep");
-    GLint step = 0;
+    GLint passUniform = glGetUniformLocation(shaderProgram, "currentPass");
+    GLint pass = 0;
 
     GLboolean mouseIsPressed = false;
     GLboolean mouseWasMoved = false;
@@ -72,8 +72,16 @@ int main(int argc, char **argv)
 
         glUseProgram(shaderProgram);
 
-        glUniform1i(stepUniform, step);
-        step = 1 - step;
+        glUniform1i(passUniform, pass);
+        
+        if (pass < 3)
+        {
+            pass++;
+        }
+        else 
+        {
+            pass = 0;
+        }
 
         // Handle user interactions
         while (SDL_PollEvent(&event))
