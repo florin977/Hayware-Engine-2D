@@ -8,8 +8,12 @@ out vec2 outTextureCoord;
 
 void main()
 {
+    float scaleFactor = 10.0;
+    mat3 scaleMatrix = mat3(scaleFactor,  0.0,          0.0,
+                            0.0,       scaleFactor,     0.0,
+                            0.0,          0.0,      scaleFactor);
 
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = vec4(scaleMatrix * aPos, 1.0);
 
     outColor = aColor;
 

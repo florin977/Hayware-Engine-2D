@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 
     // Used for the game logic (drawing pixels on the texture)
     GLuint vertexShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/vertexShader.vert", Vertex_Shader);
-    GLuint fragmentShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/fragShader.frag", Fragment_Shader);
+    GLuint fragmentShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/test.frag", Fragment_Shader);
     // -------
 
     // Used to display the rendered texture to the screen
@@ -73,7 +73,9 @@ int main(int argc, char **argv)
         glUseProgram(shaderProgram);
 
         glUniform1i(passUniform, pass);
-        
+
+        printf("CurrentPass: %d\n", pass);
+
         if (pass < 3)
         {
             pass++;
@@ -97,7 +99,7 @@ int main(int argc, char **argv)
 
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 mouseX = event.button.x;
-                mouseY = event.button.y;
+                mouseY = DEFAULT_TEXTURE_HEIGHT - event.button.y; // Make Y go from 0 (bottom) to 800 (top)
                 mouseIsPressed = true;
 
                 printf("%d %d\n", mouseX, mouseY);
@@ -190,6 +192,8 @@ int main(int argc, char **argv)
 
         // Draw
         SDL_GL_SwapWindow(window);
+
+        SDL_Delay(1000);
     }
 
     quitSDL(window);

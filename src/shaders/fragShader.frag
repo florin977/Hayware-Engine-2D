@@ -29,21 +29,27 @@ out vec4 FragColor;
 #define GREEN vec4(0.0, 1.0, 0.0, 1.0)
 #define BLUE vec4(0.0, 0.0, 1.0, 1.0)
 #define WHITE vec4(1.0)
-#define WALL vec4(0.0, 0.0, 0.0, 0.0)
+#define AIR vec4(0.0, 0.0, 0.0, 0.0)
+#define WALL vec4(0.0, 0.0, 0.0, 1.0)
 #define SAND vec4(0.76, 0.69, 0.5, 1.0)
 
-ivec2 iOffset[4] = {ivec2(0.0, 0.0), ivec2(1.0, 0.0), ivec2(0.0, -1.0), ivec2(1.0, -1.0)};
+ivec2 iOffset[4] = {ivec2(0.0, 0.0), ivec2(1.0, 0.0), ivec2(0.0, -1.0), ivec2(1.0, -1.0)}; // Why not -1 ???
 vec2 flOffset[4] = {vec2(0.0, 0.0), vec2(TEXEL_SIZE_X, 0.0), vec2(0.0, -TEXEL_SIZE_Y), vec2(TEXEL_SIZE_X, -TEXEL_SIZE_Y)};
 
 // 0 - current; 1 - right; 2 - down; 3 - diagonal
 
-void getCurrentNeighborhood(ivec2 origin, out ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], out vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE])
+void getCurrentNeighborhood(ivec2 origin, vec2 flOrigin, out ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], out vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE])
 {
     for (int i = 0; i < NEIGHBORHOOD_SIZE; i++)
     {
         iCurrentNeighborhood[i] = ivec2(origin.x + iOffset[i].x, origin.y + iOffset[i].y);
-        flCurrentNeighborhood[i] = vec2(outTextureCoord.x + flOffset[i].x, outTextureCoord.y + flOffset[i].y);
+        flCurrentNeighborhood[i] = vec2(flOrigin.x + flOffset[i].x, flOrigin.y + flOffset[i].y);
     }
+}
+
+bool inRange(ivec2 position)
+{
+    return (0 <= position.x && position.x <= TEXTURE_WIDTH && 0 <= position.y && position.y <= TEXTURE_HEIGHT);
 }
 
 int getNeighborhoodValue(ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE])
@@ -63,7 +69,7 @@ int getNeighborhoodValue(ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], vec2 flC
     return value;
 }
 
-ivec3 getOriginOffset(ivec2 iCoord)
+ivec3 getOriginOffset(ivec2 iCoord, out vec2 flOffset)
 {
     ivec3 offset = ivec3(0.0, 0.0, 0.0); // 1st and 2nd: offset 3rd : final state index
 
@@ -73,11 +79,11 @@ ivec3 getOriginOffset(ivec2 iCoord)
     {
         expectedPass = 0;
     }
-    else if ((iCoord.x & 1) == 0 && (iCoord.y & 1) == 0)
+    else if ((iCoord.x & 1) == 1 && (iCoord.y & 1) == 1)
     {
         expectedPass = 1;
     }
-    else if ((iCoord.x & 1) == 1 && (iCoord.y & 1) == 1)
+    else if ((iCoord.x & 1) == 0 && (iCoord.y & 1) == 0)
     {
         expectedPass = 2;
     }
@@ -86,20 +92,75 @@ ivec3 getOriginOffset(ivec2 iCoord)
         expectedPass = 3;
     }
 
-    switch(abs(currentPass - expectedPass))
+    // Handle possible cases
+
+    if (currentPass == expectedPass)
     {
-        case 0:
-            offset = ivec3(0.0, 0.0, 0.0);
-            break;
-        case 1:
-            offset = ivec3(0.0, 1.0, 1.0);
-            break;
-        case 2:
-            offset = ivec3(-1.0, 0.0, 2.0);
-            break;
-        case 3:
-            offset = ivec3(-1.0, 1.0, 3.0);
-            break;
+        offset = ivec3(0.0, 0.0, 0.0);
+        flOffset = vec2(0.0, 0.0);
+    }
+    if (currentPass == 0 && expectedPass == 1)
+    {
+        offset = ivec3(0.0, 1.0, 2.0);
+        flOffset = vec2(0.0, TEXEL_SIZE_Y);
+    }
+    if (currentPass == 0 && expectedPass == 2)
+    {
+        offset = ivec3(-1.0, 0.0, 1.0);
+        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
+    }
+    if (currentPass == 0 && expectedPass == 3)
+    {
+        offset = ivec3(-1.0, 1.0, 3.0);
+        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+    }
+
+    if (currentPass == 1 && expectedPass == 0)
+    {
+        offset = ivec3(0.0, 1.0, 2.0);
+        flOffset = vec2(0.0, TEXEL_SIZE_Y);
+    }
+    if (currentPass == 1 && expectedPass == 2)
+    {
+        offset = ivec3(-1.0, 1.0, 3.0);
+        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+    }
+    if (currentPass == 1 && expectedPass == 3)
+    {
+        offset = ivec3(-1.0, 0.0, 1.0);
+        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
+    }
+
+    if (currentPass == 2 && expectedPass == 0)
+    {
+        offset = ivec3(-1.0, 0.0, 1.0);
+        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
+    }
+    if (currentPass == 2 && expectedPass == 1)
+    {
+        offset = ivec3(-1.0, 1.0, 3.0);
+        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+    }
+    if (currentPass == 2 && expectedPass == 3)
+    {
+        offset = ivec3(0.0, 1.0, 2.0);
+        flOffset = vec2(0.0, TEXEL_SIZE_Y);
+    }
+
+    if (currentPass == 3 && expectedPass == 0)
+    {
+        offset = ivec3(-1.0, 1.0, 3.0);
+        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+    }
+    if (currentPass == 3 && expectedPass == 1)
+    {
+        offset = ivec3(-1.0, 0.0, 1.0);
+        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
+    }
+    if (currentPass == 3 && expectedPass == 2)
+    {
+        offset = ivec3(0.0, 1.0, 2.0);
+        flOffset = vec2(0.0, TEXEL_SIZE_Y);
     }
 
     return offset;
@@ -107,12 +168,13 @@ ivec3 getOriginOffset(ivec2 iCoord)
 
 vec4 updatePixelState(ivec2 iCoord)
 {
-    ivec3 originOffset = getOriginOffset(iCoord);
+    vec2 flOriginOffset = vec2(0.0, 0.0);
+    ivec3 originOffset = getOriginOffset(iCoord, flOriginOffset);
 
     ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE] = {ivec2(0.0, 0.0), ivec2(0.0, 0.0), ivec2(0.0, 0.0), ivec2(0.0, 0.0)};
     vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE] = {vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0)};
 
-    getCurrentNeighborhood(iCoord + originOffset.xy, iCurrentNeighborhood, flCurrentNeighborhood);
+    getCurrentNeighborhood(iCoord + originOffset.xy, outTextureCoord + flOriginOffset.xy, iCurrentNeighborhood, flCurrentNeighborhood);
 
     int neighborhoodValue = getNeighborhoodValue(iCurrentNeighborhood, flCurrentNeighborhood);
 
@@ -122,21 +184,26 @@ vec4 updatePixelState(ivec2 iCoord)
     {
         vec4 currentColor = texture(outTexture, flCurrentNeighborhood[i]);
 
+        /*if (outTextureCoord.x == flCurrentNeighborhood[i].x && outTextureCoord.y == flCurrentNeighborhood[i].y)
+        {
+            return GREEN;
+        }*/
+
         finalState[i] = currentColor;
     }
-
+    
     switch (neighborhoodValue)
     {
         case 1:
-            finalState[0] = WALL;
-            finalState[1] = WALL;
+            finalState[0] = AIR;
+            finalState[1] = AIR;
             finalState[2] = SAND;
-            finalState[3] = WALL;
+            finalState[3] = AIR;
             break;
         case 2:
-            finalState[0] = WALL;
-            finalState[1] = WALL;
-            finalState[2] = WALL;
+            finalState[0] = AIR;
+            finalState[1] = AIR;
+            finalState[2] = AIR;
             finalState[3] = SAND;
             break;
         case 3:
@@ -144,23 +211,32 @@ vec4 updatePixelState(ivec2 iCoord)
         case 6:
         case 9:
         case 10:
-            finalState[0] = WALL;
-            finalState[1] = WALL;
+            finalState[0] = AIR;
+            finalState[1] = AIR;
             finalState[2] = SAND;
             finalState[3] = SAND;
             break;
         case 7:
             finalState[0] = SAND;
-            finalState[1] = WALL;
+            finalState[1] = AIR;
             finalState[2] = SAND;
             finalState[3] = SAND;
             break;
         case 11:
-            finalState[0] = WALL;
+            finalState[0] = AIR;
             finalState[1] = SAND;
             finalState[2] = SAND;
             finalState[3] = SAND;
             break;
+        default:
+            break;
+    }
+    if (neighborhoodValue != 0.0)
+    {
+        finalState[0] = RED;
+        finalState[1] = RED;
+        finalState[2] = RED;
+        finalState[3] = RED;
     }
 
     return finalState[originOffset.z];
@@ -179,8 +255,10 @@ void main()
         newColor = SAND;
     }
 
-    //vec2 nextPixel = vec2(outTextureCoord.x + TEXEL_SIZE_X, outTextureCoord.y);
-    //vec4 sampled = texture(outTexture, nextPixel);
+    if ((iCoord.x % 10 == 0 && iCoord.y % 10 == 0) )//|| (iCoord.x % 10 == 0 && iCoord.y % 10 == 1) || (iCoord.x % 10 == 1 && iCoord.y % 10 == 0) || (iCoord.x % 10 == 1 && iCoord.y % 10 == 1))
+    {
+        newColor = SAND;
+    }
 
     FragColor = newColor;
 }
