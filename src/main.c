@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
         glUniform1i(passUniform, pass);
 
-        printf("CurrentPass: %d\n", pass);
+        //printf("CurrentPass: %d\n", pass);
 
         if (pass < 3)
         {
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
         // Draw
         SDL_GL_SwapWindow(window);
 
-        SDL_Delay(1000);
+        SDL_Delay(0);
     }
 
     quitSDL(window);

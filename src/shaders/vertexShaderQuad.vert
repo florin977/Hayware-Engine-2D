@@ -8,7 +8,7 @@ out vec2 outTextureCoord;
 
 void main()
 {
-    float scaleFactor = 10.0;
+    float scaleFactor = 1.0;
     mat3 scaleMatrix = mat3(scaleFactor,  0.0,          0.0,
                             0.0,       scaleFactor,     0.0,
                             0.0,          0.0,      scaleFactor);
