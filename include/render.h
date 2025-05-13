@@ -29,12 +29,18 @@ GLuint createEBO(const VECTOR *indices, const GLenum drawType);
 
 GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO);
 
-GLuint createTexture(const char *filename, const GLint internalFormat); // Mostly for rendering squad as of now
+GLuint createTexture(const char *filename, const GLint internalFormat, const GLint format, const GLint channelSize);
 
 GLuint createFBO(const GLuint texture);
+
+GLuint createBreakoutFBO(const BREAKOUT_TEXTURE texture);
+
+void bindBreakoutTextures(const BREAKOUT_TEXTURE texture, const GLuint shaderProgram);
 
 GLuint compileShader(const char* filename, Shader_Type shaderType);
 
 GLuint createProgram(GLuint vertexShader, GLuint fragmentShader);
+
+BREAKOUT_TEXTURE createBreakoutTexture();
 
 #endif

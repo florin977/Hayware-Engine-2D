@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 
     // Used for the game logic (drawing pixels on the texture)
     GLuint vertexShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/vertexShader.vert", Vertex_Shader);
-    GLuint fragmentShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/test.frag", Fragment_Shader);
+    GLuint fragmentShader = compileShader("/home/andrei/1HaywareEngine/src/shaders/fragShader.frag", Fragment_Shader);
     // -------
 
     // Used to display the rendered texture to the screen
@@ -50,9 +50,9 @@ int main(int argc, char **argv)
     // SDL_GL_SetSwapInterval(0); // Uncomment to disable VSYNC
 
     // Create textures and FBOs
-    GLuint texture[2] = {createTexture("", GL_RGBA), createTexture("", GL_RGBA)};
+    BREAKOUT_TEXTURE FBOtexture[2] = {createBreakoutTexture(), createBreakoutTexture()};
 
-    GLuint FBO[2] = {createFBO(texture[0]), createFBO(texture[1])};
+    GLuint FBO[2] = {createBreakoutFBO(FBOtexture[0]), createBreakoutFBO(FBOtexture[1])};
     // -------
 
     // Boolean to be used for ping ponging between the FBOs
@@ -73,8 +73,6 @@ int main(int argc, char **argv)
         glUseProgram(shaderProgram);
 
         glUniform1i(passUniform, pass);
-
-        //printf("CurrentPass: %d\n", pass);
 
         if (pass < 3)
         {
@@ -145,26 +143,31 @@ int main(int argc, char **argv)
 
         GLuint64 currentTime = SDL_GetTicks();
 
-        GLuint readTexture;
-        GLuint displayTexture;
+        BREAKOUT_TEXTURE readTexture;
+        BREAKOUT_TEXTURE displayTexture;
 
         if (pingPong)
         {
-            readTexture = texture[0];
-            displayTexture = texture[1];
+            readTexture = FBOtexture[0];
+            displayTexture = FBOtexture[1];
+            
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO[1]);
         }
         else
         {
-            readTexture = texture[1];
-            displayTexture = texture[0];
+            readTexture = FBOtexture[1];
+            displayTexture = FBOtexture[0];
+
             glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO[0]);
         }
 
         pingPong = !pingPong;
 
         // Render to texture
-        glBindTexture(GL_TEXTURE_2D, readTexture);
+
+        // Read from readTexture, but write to the texture in the other FBO
+
+        bindBreakoutTextures(readTexture, shaderProgram);
 
         glBindVertexArray(VAOquad);
         glBindBuffer(GL_BUFFER, VBOquad);
@@ -186,7 +189,7 @@ int main(int argc, char **argv)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOquad);
         glUseProgram(shaderProgramQuad);
 
-        glBindTexture(GL_TEXTURE_2D, displayTexture);
+        bindBreakoutTextures(displayTexture, shaderProgramQuad);
 
         glDrawElements(GL_TRIANGLES, indicesQuad.currentIndex, GL_UNSIGNED_INT, 0);
 

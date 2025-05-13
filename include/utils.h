@@ -58,6 +58,13 @@ typedef struct VERTEX
     TEXTURE texture;
 } VERTEX;
 
+typedef struct BREAKOUT_TEXTURE
+{
+    GLuint colorTexture;
+    GLuint IDsTexture;
+    GLuint velocityTexture;
+} BREAKOUT_TEXTURE;
+
 VECTOR createVector(uint8_t dataSize); // Call createVector after malloc == memory leak
 
 VERTEX createVertex(); // Position: (0, 0, 0), color: white, texture coords: (0, 0)

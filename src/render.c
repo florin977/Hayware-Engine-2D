@@ -66,7 +66,7 @@ GLuint createVAO(const GLuint VBO, const VECTOR *vertices, const GLuint EBO)
     return VAO;
 }
 
-GLuint createTexture(const char *filename, const GLint internalFormat)
+GLuint createTexture(const char *filename, const GLint internalFormat, const GLint format, const GLint channelSize)
 {
     stbi_set_flip_vertically_on_load(true);
 
@@ -86,18 +86,18 @@ GLuint createTexture(const char *filename, const GLint internalFormat)
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // This linewas the reason for a lot of shader errors. It was GL_LINEAR_MIPMAP_NEAREST before.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // This line was the reason for a lot of shader errors. It was GL_LINEAR_MIPMAP_NEAREST before.
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     if (filename[0] != 0)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, textureWidth, textureHeight, 0, internalFormat, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, textureWidth, textureHeight, 0, format, channelSize, data);
     }
     else 
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, textureWidth, textureHeight, 0, internalFormat, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, textureWidth, textureHeight, 0, format, channelSize, 0);
     }
     
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -120,10 +120,68 @@ GLuint createFBO(const GLuint texture)
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        fprintf(stderr, "%d\n", status);
+    }
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return FBO;
+}
+
+GLuint createBreakoutFBO(const BREAKOUT_TEXTURE texture)
+{
+    GLuint FBO = 0;
+
+    glGenFramebuffers(1, &FBO);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.colorTexture, 0); // Pixel Color
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, texture.IDsTexture, 0); // Pixel ID
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, texture.velocityTexture, 0); // Pixel velocity
+
+    GLenum drawBuffers[3] = {
+        GL_COLOR_ATTACHMENT0,
+        GL_COLOR_ATTACHMENT1,
+        GL_COLOR_ATTACHMENT2
+    };
+
+    glDrawBuffers(3, drawBuffers);
+
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+    if (status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        fprintf(stderr, "%d\n", status);
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return FBO;
+}
+
+void bindBreakoutTextures(const BREAKOUT_TEXTURE texture, const GLuint shaderProgram)
+{
+    // Bind color texture at location = 0 and pass it on to the fragment sahder via a sampler 2D
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture.colorTexture);
+    glUniform1i(glGetUniformLocation(shaderProgram, "outTexture"), 0);
+
+    // Bind color texture at location = 1
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture.IDsTexture);
+    glUniform1i(glGetUniformLocation(shaderProgram, "outTextureID"), 1);
+
+    // Bind color texture at location = 2
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, texture.velocityTexture);
+    glUniform1i(glGetUniformLocation(shaderProgram, "outTextureVelocity"), 2);
 }
 
 GLuint compileShader(const char *filename, Shader_Type shaderType)
@@ -230,4 +288,15 @@ GLuint createProgram(GLuint vertexShader, GLuint fragmentShader)
     glDeleteShader(fragmentShader);
 
     return shaderProgram;
+}
+
+BREAKOUT_TEXTURE createBreakoutTexture()
+{
+    BREAKOUT_TEXTURE textures = {0, 0, 0};
+
+    textures.colorTexture = createTexture("", GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
+    textures.IDsTexture = createTexture("", GL_R32UI, GL_RED_INTEGER, GL_UNSIGNED_INT);
+    textures.velocityTexture = createTexture("", GL_RG32F, GL_RG, GL_FLOAT);
+
+    return textures;
 }

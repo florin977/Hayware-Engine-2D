@@ -7,20 +7,25 @@ in vec2 outTextureCoord;
 uniform int currentPass;
 
 uniform sampler2D outTexture;
+uniform usampler2D outTextureID;
+uniform sampler2D outTextureVelocity;
+
 uniform ivec2 mouseCoord;
 uniform bool mousePressed;
 
-out vec4 FragColor;
+layout(location = 0) out vec4 FragColor;
+layout(location = 1) out uint FragID;
+layout(location = 2) out vec2 FragVelocity;
 
 #define TEXTURE_WIDTH 1000
 #define TEXTURE_HEIGHT 800
 
 #define TOLERANCE 0.01
-#define MOUSE_PRESS_TOLERANCE 0.005
+#define GRID_TOLERANCE 0.0000001
 #define TEXEL_SIZE_X (1.0 / float(TEXTURE_WIDTH))
 #define TEXEL_SIZE_Y (1.0 / float(TEXTURE_HEIGHT))
-#define NEIGHBORHOOD_SIZE 4
-#define mouseEquals(a, b) (distance(a, b) <= MOUSE_PRESS_TOLERANCE)
+#define GRID_SIZE 4
+#define gridEquals(a, b) (distance(a, b) <= GRID_TOLERANCE)
 #define equals(a, b) (distance(a, b) <= TOLERANCE)
 #define colorEquals(A, B) (A.r == B.r && A.g == B.g && A.b == B.b && A.a == B.a)
 
@@ -29,52 +34,30 @@ out vec4 FragColor;
 #define GREEN vec4(0.0, 1.0, 0.0, 1.0)
 #define BLUE vec4(0.0, 0.0, 1.0, 1.0)
 #define WHITE vec4(1.0)
-#define AIR vec4(0.0, 0.0, 0.0, 0.0)
-#define WALL vec4(0.0, 0.0, 0.0, 1.0)
-#define SAND vec4(0.76, 0.69, 0.5, 1.0)
+#define AIR_COLOR vec4(0.0, 0.0, 0.0, 0.0)
+#define WALL_COLOR vec4(0.0, 0.0, 0.0, 1.0)
+#define SAND_COLOR vec4(0.76, 0.69, 0.5, 1.0)
 
-ivec2 iOffset[4] = {ivec2(0.0, 0.0), ivec2(1.0, 0.0), ivec2(0.0, -1.0), ivec2(1.0, -1.0)}; // Why not -1 ???
-vec2 flOffset[4] = {vec2(0.0, 0.0), vec2(TEXEL_SIZE_X, 0.0), vec2(0.0, -TEXEL_SIZE_Y), vec2(TEXEL_SIZE_X, -TEXEL_SIZE_Y)};
+#define WALL 100
+#define AIR 0
+#define SAND 1
 
-// 0 - current; 1 - right; 2 - down; 3 - diagonal
+int expectedPass = 0;
+int stateIndex = 0;
 
-void getCurrentNeighborhood(ivec2 origin, vec2 flOrigin, out ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], out vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE])
+// 0 - current; 1 - to the right; 2 - downward; 3 - diagonal
+vec2 gridOffsets[GRID_SIZE] = {vec2(0.0, 0.0), vec2(TEXEL_SIZE_X, 0.0), vec2(0.0, -TEXEL_SIZE_Y), vec2(TEXEL_SIZE_X, -TEXEL_SIZE_Y)};
+
+vec2 gridCells[GRID_SIZE] = {vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0)};
+uint gridIDs[GRID_SIZE] = {0, 0, 0, 0};
+
+bool inRange(vec2 position)
 {
-    for (int i = 0; i < NEIGHBORHOOD_SIZE; i++)
-    {
-        iCurrentNeighborhood[i] = ivec2(origin.x + iOffset[i].x, origin.y + iOffset[i].y);
-        flCurrentNeighborhood[i] = vec2(flOrigin.x + flOffset[i].x, flOrigin.y + flOffset[i].y);
-    }
+    return (0.0 <= position.x && position.x <= 1.0 && 0.0 <= position.y && position.y <= 1.0);
 }
 
-bool inRange(ivec2 position)
+bool isOrigin(ivec2 iCoord)
 {
-    return (0 <= position.x && position.x <= TEXTURE_WIDTH && 0 <= position.y && position.y <= TEXTURE_HEIGHT);
-}
-
-int getNeighborhoodValue(ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE], vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE])
-{
-    int value = 0;
-
-    for (int i = 0; i < NEIGHBORHOOD_SIZE; i++)
-    {
-        vec4 elementColor = texture(outTexture, flCurrentNeighborhood[i]);
-
-        if (equals(elementColor, SAND))
-        {
-            value = value | (1 << i);
-        }
-    }
-
-    return value;
-}
-
-ivec3 getOriginOffset(ivec2 iCoord, out vec2 flOffset)
-{
-    ivec3 offset = ivec3(0.0, 0.0, 0.0); // 1st and 2nd: offset 3rd : final state index
-
-    int expectedPass = 0;
-
     if ((iCoord.x & 1) == 0 && (iCoord.y & 1) == 1)
     {
         expectedPass = 0;
@@ -92,173 +75,288 @@ ivec3 getOriginOffset(ivec2 iCoord, out vec2 flOffset)
         expectedPass = 3;
     }
 
-    // Handle possible cases
-
-    if (currentPass == expectedPass)
-    {
-        offset = ivec3(0.0, 0.0, 0.0);
-        flOffset = vec2(0.0, 0.0);
-    }
-    if (currentPass == 0 && expectedPass == 1)
-    {
-        offset = ivec3(0.0, 1.0, 2.0);
-        flOffset = vec2(0.0, TEXEL_SIZE_Y);
-    }
-    if (currentPass == 0 && expectedPass == 2)
-    {
-        offset = ivec3(-1.0, 0.0, 1.0);
-        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
-    }
-    if (currentPass == 0 && expectedPass == 3)
-    {
-        offset = ivec3(-1.0, 1.0, 3.0);
-        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
-    }
-
-    if (currentPass == 1 && expectedPass == 0)
-    {
-        offset = ivec3(0.0, 1.0, 2.0);
-        flOffset = vec2(0.0, TEXEL_SIZE_Y);
-    }
-    if (currentPass == 1 && expectedPass == 2)
-    {
-        offset = ivec3(-1.0, 1.0, 3.0);
-        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
-    }
-    if (currentPass == 1 && expectedPass == 3)
-    {
-        offset = ivec3(-1.0, 0.0, 1.0);
-        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
-    }
-
-    if (currentPass == 2 && expectedPass == 0)
-    {
-        offset = ivec3(-1.0, 0.0, 1.0);
-        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
-    }
-    if (currentPass == 2 && expectedPass == 1)
-    {
-        offset = ivec3(-1.0, 1.0, 3.0);
-        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
-    }
-    if (currentPass == 2 && expectedPass == 3)
-    {
-        offset = ivec3(0.0, 1.0, 2.0);
-        flOffset = vec2(0.0, TEXEL_SIZE_Y);
-    }
-
-    if (currentPass == 3 && expectedPass == 0)
-    {
-        offset = ivec3(-1.0, 1.0, 3.0);
-        flOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
-    }
-    if (currentPass == 3 && expectedPass == 1)
-    {
-        offset = ivec3(-1.0, 0.0, 1.0);
-        flOffset = vec2(-TEXEL_SIZE_X, 0.0);
-    }
-    if (currentPass == 3 && expectedPass == 2)
-    {
-        offset = ivec3(0.0, 1.0, 2.0);
-        flOffset = vec2(0.0, TEXEL_SIZE_Y);
-    }
-
-    return offset;
+    return currentPass == expectedPass;
 }
 
-vec4 updatePixelState(ivec2 iCoord)
+vec2 getOriginOffset(ivec2 iCoord)
 {
-    vec2 flOriginOffset = vec2(0.0, 0.0);
-    ivec3 originOffset = getOriginOffset(iCoord, flOriginOffset);
+    vec2 originOffset = vec2(0.0, 0.0);
 
-    ivec2 iCurrentNeighborhood[NEIGHBORHOOD_SIZE] = {ivec2(0.0, 0.0), ivec2(0.0, 0.0), ivec2(0.0, 0.0), ivec2(0.0, 0.0)};
-    vec2 flCurrentNeighborhood[NEIGHBORHOOD_SIZE] = {vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0), vec2(0.0, 0.0)};
-
-    getCurrentNeighborhood(iCoord + originOffset.xy, outTextureCoord + flOriginOffset.xy, iCurrentNeighborhood, flCurrentNeighborhood);
-
-    int neighborhoodValue = getNeighborhoodValue(iCurrentNeighborhood, flCurrentNeighborhood);
-
-    vec4 finalState[NEIGHBORHOOD_SIZE];
-
-    for (int i = 0; i < NEIGHBORHOOD_SIZE; i++)
+    if (isOrigin(iCoord))
     {
-        vec4 currentColor = texture(outTexture, flCurrentNeighborhood[i]);
-
-        /*if (outTextureCoord.x == flCurrentNeighborhood[i].x && outTextureCoord.y == flCurrentNeighborhood[i].y)
-        {
-            return GREEN;
-        }*/
-
-        finalState[i] = currentColor;
+        stateIndex = 0;
+        return originOffset;
     }
-    
-    switch (neighborhoodValue)
+
+    if (currentPass == 0 || currentPass == 3)
+    {
+        switch(abs(currentPass - expectedPass))
+        {
+            case 1:
+            stateIndex = 1;
+            originOffset = vec2(-TEXEL_SIZE_X, 0.0);
+            break;
+
+            case 2:
+            stateIndex = 2;
+            originOffset = vec2(0.0, +TEXEL_SIZE_Y);
+            break;
+
+            case 3:
+            stateIndex = 3;
+            originOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+            break;
+        }
+    }
+    else if (currentPass == 1)
+    {
+        switch(currentPass - expectedPass)
+        {
+            case 1:
+            stateIndex = 1;
+            originOffset = vec2(-TEXEL_SIZE_X, 0.0);
+            break;
+
+            case -2:
+            stateIndex = 2;
+            originOffset = vec2(0.0, +TEXEL_SIZE_Y);
+            break;
+
+            case -1:
+            stateIndex = 3;
+            originOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+            break;
+        }
+    }
+    else if (currentPass == 2)
+    {
+        switch(currentPass - expectedPass)
+        {
+            case -1:
+            stateIndex = 1;
+            originOffset = vec2(-TEXEL_SIZE_X, 0.0);
+            break;
+
+            case 2:
+            stateIndex = 2;
+            originOffset = vec2(0.0, +TEXEL_SIZE_Y);
+            break;
+
+            case 1:
+            stateIndex = 3;
+            originOffset = vec2(-TEXEL_SIZE_X, TEXEL_SIZE_Y);
+            break;
+        }
+    }
+
+    return originOffset;
+}
+
+void getGridIDs(vec2 origin)
+{
+    for (int i = 0; i < GRID_SIZE; i++)
+    {
+        gridCells[i] = origin + gridOffsets[i];
+
+        gridIDs[i] = texture(outTextureID, gridCells[i]).r;
+        
+        if (!inRange(gridCells[i]))
+        {
+            gridIDs[i] = WALL;
+        }
+    }
+}
+
+int getGridValue(vec2 origin)
+{
+    int gridValue = 0;
+
+    getGridIDs(origin);
+
+    for (int i = 0; i < GRID_SIZE; i++)
+    {
+        if (gridIDs[i] == SAND)
+        {
+            gridValue = gridValue | (1 << i);
+        }
+        else if (gridIDs[i] == WALL)
+        {
+            gridValue = 15;
+            break;
+        }
+    }
+
+    return gridValue;
+}
+
+uint updatePixelID(ivec2 iCoord)
+{
+    vec2 origin = outTextureCoord + getOriginOffset(iCoord);
+
+    int gridValue = getGridValue(origin);
+
+    uint updatedGridIDs[4] = gridIDs;
+
+    switch (gridValue)
     {
         case 1:
-            finalState[0] = AIR;
-            finalState[1] = AIR;
-            finalState[2] = SAND;
-            finalState[3] = AIR;
+            updatedGridIDs[0] = AIR;
+            updatedGridIDs[1] = AIR;
+            updatedGridIDs[2] = SAND;
+            updatedGridIDs[3] = AIR;
             break;
         case 2:
-            finalState[0] = AIR;
-            finalState[1] = AIR;
-            finalState[2] = AIR;
-            finalState[3] = SAND;
+            updatedGridIDs[0] = AIR;
+            updatedGridIDs[1] = AIR;
+            updatedGridIDs[2] = AIR;
+            updatedGridIDs[3] = SAND;
             break;
         case 3:
         case 5:
         case 6:
         case 9:
         case 10:
-            finalState[0] = AIR;
-            finalState[1] = AIR;
-            finalState[2] = SAND;
-            finalState[3] = SAND;
+            updatedGridIDs[0] = AIR;
+            updatedGridIDs[1] = AIR;
+            updatedGridIDs[2] = SAND;
+            updatedGridIDs[3] = SAND;
             break;
         case 7:
-            finalState[0] = SAND;
-            finalState[1] = AIR;
-            finalState[2] = SAND;
-            finalState[3] = SAND;
+            updatedGridIDs[0] = SAND;
+            updatedGridIDs[1] = AIR;
+            updatedGridIDs[2] = SAND;
+            updatedGridIDs[3] = SAND;
             break;
         case 11:
-            finalState[0] = AIR;
-            finalState[1] = SAND;
-            finalState[2] = SAND;
-            finalState[3] = SAND;
+            updatedGridIDs[0] = AIR;
+            updatedGridIDs[1] = SAND;
+            updatedGridIDs[2] = SAND;
+            updatedGridIDs[3] = SAND;
             break;
-        default:
-            break;
-    }
-    if (neighborhoodValue != 0.0)
-    {
-        finalState[0] = RED;
-        finalState[1] = RED;
-        finalState[2] = RED;
-        finalState[3] = RED;
     }
 
-    return finalState[originOffset.z];
+    return updatedGridIDs[stateIndex];
+}
+
+uint checkSandSpawn(ivec2 iCoord, uint currentID)
+{
+    if (mousePressed && iCoord == mouseCoord)
+    {
+        return SAND;
+    }
+
+    return currentID;
 }
 
 void main()
 {   
     vec4 newColor = texture(outTexture, outTextureCoord);
+    uint newID = texture(outTextureID, outTextureCoord).r;
+    vec2 newVelocity = texture(outTextureVelocity, outTextureCoord).xy;
 
-    ivec2 iCoord = ivec2(outTextureCoord.x * TEXTURE_WIDTH, outTextureCoord.y * TEXTURE_HEIGHT);
+    ivec2 iCoord = ivec2(outTextureCoord * ivec2(TEXTURE_WIDTH, TEXTURE_HEIGHT));
 
-    newColor = updatePixelState(iCoord);
+    newID = updatePixelID(iCoord);
+    newID = checkSandSpawn(iCoord, newID);
 
-    if (mousePressed && iCoord.x == mouseCoord.x && iCoord.y == mouseCoord.y)
+    FragID = newID;
+
+    FragVelocity = vec2(0.0, 0.0); // TODO: Use actual velocity of the sand
+
+    if (newID == SAND)
     {
-        newColor = SAND;
+        FragColor = SAND_COLOR;
+    }
+    else if (newID == AIR)
+    {
+        FragColor = WALL_COLOR;
+    }
+    else 
+    {
+        FragColor = WHITE;
+    }
+}
+
+
+
+// TESTS
+
+vec4 testOrigin(ivec2 iCoord)
+{
+    if (isOrigin(iCoord))
+    {
+        return SAND_COLOR;
+    }
+    
+    return WALL_COLOR;
+}
+
+vec4 testDistanceToOrigin(ivec2 iCoord)
+{
+    vec2 originOffset = getOriginOffset(iCoord);
+    
+    if (originOffset == vec2(0.0, 0.0))
+    {
+        return SAND_COLOR;
+    }
+    else if (originOffset == vec2(-TEXEL_SIZE_X, 0.0))
+    {
+        return RED;
+    }
+    else if (originOffset == vec2(0.0, TEXEL_SIZE_Y))
+    {
+        return GREEN;
+    }
+    else 
+    {
+        return BLUE;
+    }
+}
+
+vec4 testStateIndex(ivec2 iCoord)
+{
+    vec2 originOffset = getOriginOffset(iCoord);
+
+    switch(stateIndex)
+    {
+        case 0:
+        return SAND_COLOR;
+        break;
+
+        case 1:
+        return RED;
+        break;
+
+        case 2:
+        return GREEN;
+        break;
+
+        case 3:
+        return BLUE;
+        break;
+    }
+}
+
+vec4 testGridValue(ivec2 iCoord, vec4 currentColor)
+{
+    vec2 originOffset = getOriginOffset(iCoord);
+
+    int gridValue = getGridValue(outTextureCoord + originOffset);
+
+    switch(gridValue % 4)
+    {
+        case 0:
+        return currentColor;
+
+        case 1:
+        return RED;
+
+        case 2:
+        return GREEN;
+
+        case 3:
+        return BLUE;
     }
 
-    if ((iCoord.x % 10 == 0 && iCoord.y % 10 == 0) )//|| (iCoord.x % 10 == 0 && iCoord.y % 10 == 1) || (iCoord.x % 10 == 1 && iCoord.y % 10 == 0) || (iCoord.x % 10 == 1 && iCoord.y % 10 == 1))
-    {
-        newColor = SAND;
-    }
-
-    FragColor = newColor;
+    return currentColor;
 }
