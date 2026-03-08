@@ -1,0 +1,3 @@
+/home/andrei/Downloads/Hayware-Engine-2D-main/build/build/CMakeFiles/prg.dir
+/home/andrei/Downloads/Hayware-Engine-2D-main/build/build/CMakeFiles/edit_cache.dir
+/home/andrei/Downloads/Hayware-Engine-2D-main/build/build/CMakeFiles/rebuild_cache.dir

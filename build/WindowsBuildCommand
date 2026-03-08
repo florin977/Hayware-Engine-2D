@@ -1,0 +1,9 @@
+x86_64-w64-mingw32-gcc -o prg.exe \
+    /home/andrei/1HaywareEngine/src/main.c \
+    /home/andrei/1HaywareEngine/src/SDL/init_window.c \
+    /home/andrei/1HaywareEngine/src/render.c \
+    -I/home/andrei/1HaywareEngine/include \
+    -I/home/andrei/1HaywareEngine/include/GL \
+    -I/home/andrei/SDL/include \
+    -L/home/andrei/1HaywareEngine/build \
+    -lSDL3 -lGLEW -lopengl32

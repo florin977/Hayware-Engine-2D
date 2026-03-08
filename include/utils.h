@@ -1,0 +1,71 @@
+#ifndef UTILS_H
+
+#define UTILS_H
+
+// #include "render.h"
+#include <GL/glew.h>
+// --------
+#include <GL/gl.h>
+#include <stdint.h>
+
+#define PI 3.14
+#define CHUNK 128
+
+typedef struct VECTOR {
+  GLuint64 size;
+  GLuint64 currentIndex;
+  uint8_t dataSize;
+  void *array;
+} VECTOR;
+
+typedef struct POINT {
+  GLfloat x;
+  GLfloat y;
+  GLfloat z;
+} POINT;
+
+typedef struct COLOR {
+  GLfloat r;
+  GLfloat g;
+  GLfloat b;
+} COLOR;
+
+typedef struct TEXTURE {
+  GLfloat s; // x
+  GLfloat t; // y
+  GLfloat r; // z - Used for noise generation, volumetric fog etc.
+} TEXTURE;
+
+typedef struct VERTEX {
+  // Position
+  POINT position;
+
+  // Color
+  COLOR color;
+
+  // Texture coordinates
+  TEXTURE texture;
+} VERTEX;
+
+typedef struct BREAKOUT_TEXTURE {
+  GLuint colorTexture;
+  GLuint IDsTexture;
+  GLuint velocityTexture;
+} BREAKOUT_TEXTURE;
+
+VECTOR
+createVector(uint8_t dataSize); // Call createVector after malloc == memory leak
+
+VERTEX createVertex(
+    POINT pos, COLOR col,
+    TEXTURE tex); // Position: (0, 0, 0), color: white, texture coords: (0, 0)
+
+void createFullscreenQuad(VECTOR *vertices, VECTOR *indices);
+
+void push_back(VECTOR *v, void *element);
+
+void *getElement(VECTOR *v, GLuint64 index);
+
+GLdouble toRadians(GLdouble degrees);
+
+#endif

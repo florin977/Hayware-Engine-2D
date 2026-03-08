@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "render.h": "c",
+        "stdint.h": "c"
+    },
+    "cmake.sourceDirectory": "/home/andrei/1HaywareEngine/build"
+}
