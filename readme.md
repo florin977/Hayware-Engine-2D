@@ -4,9 +4,10 @@ This is a simple and minimal game engine designed for learning more about OpenGL
 
 ## Falling Sand Demo
 
-<video src="./media/Falling_Sand.webm" controls="controls" muted="muted" autoplay="autoplay" loop="loop" width="100%">
+<video src="./media/sand_demo.webm" controls="controls" muted="muted" autoplay="autoplay" loop="loop" width="100%">
   Your browser does not support the video tag.
 </video>
+
 ## Project overview
 
 The engine is in its early stages of development and currently focuses on rendering with no GUI. Think of it as an alternative to the path tool in SVG.
