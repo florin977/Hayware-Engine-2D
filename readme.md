@@ -60,4 +60,3 @@ Feel free to fork the repository, make changes, and submit pull requests! Contri
 - [ ] Installation guide in README.md (Linux, Windows, macOS)
 - [ ] Koch Fractal
 - [X] 3D Box Fractal
-

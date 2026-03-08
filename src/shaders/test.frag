@@ -362,4 +362,8 @@ void main()
     newColor = checkSandSpawn(iCoord, newColor);
 
     FragColor = newColor;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 01d450266397d9916c4277902c5d3130b8da1f0a

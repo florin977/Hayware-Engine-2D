@@ -2,7 +2,6 @@
 
 #define RENDER_H
 
-#include "cglm/cglm.h"
 #include "init_window.h"
 #include "stb_image.h"
 #include "utils.h"

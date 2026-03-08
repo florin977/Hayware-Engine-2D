@@ -3,7 +3,6 @@
 #define DEMO_H
 
 #include "utils.h"
-#include <stdio.h>
 
 #define SQUARE_POINTS 4
 #define CONNECTIONS_NUM 4

@@ -365,4 +365,8 @@ vec4 testGridValue(ivec2 iCoord, vec4 currentColor)
     }
 
     return currentColor;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 01d450266397d9916c4277902c5d3130b8da1f0a
