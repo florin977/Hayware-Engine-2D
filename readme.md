@@ -4,7 +4,7 @@ This is a simple and minimal game engine designed for learning more about OpenGL
 
 ## Falling Sand Demo
 
-<video src="./media/sand_demo.webm" controls="controls" muted="muted" autoplay="autoplay" loop="loop" width="100%">
+<video src="https://raw.githubusercontent.com/florin977/Hayware-Engine-2D/main/media/sand_demo.webm" controls="controls" muted="muted" autoplay="autoplay" loop="loop" width="100%">
   Your browser does not support the video tag.
 </video>
 
